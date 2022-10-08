@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import block from "bem-cn";
+import Header from "./components/Header";
+import MainComponent from "./components/MainContent";
+
+import "./App.scss";
+import ExcelImportComponent from "./features/ExcelImportComponent";
+
+const cnApp = block("App");
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={cnApp()}>
+      <Header />
+      <MainComponent>
+        <>
+          <ExcelImportComponent />
+        </>
+      </MainComponent>
     </div>
   );
 }
