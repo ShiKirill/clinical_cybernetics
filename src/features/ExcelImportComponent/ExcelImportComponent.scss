@@ -1,11 +1,46 @@
 .excelImportComponent {
   width: 100%;
-  height: 60%;
-  border: 1px solid black;
+  height: calc(100% - 80px);
+  border: 1px solid #1f191c;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+
+  &__container {
+    width: 100%;
+    height: 70%;
+
+    &_fullHeight {
+      height: 100%;
+    }
+  }
+
+  &__title {
+    font-size: 24px;
+    text-align: left;
+  }
+
+  &__table {
+    height: calc(100% - 100px) !important;
+    background-color: #f0c1d6;
+
+    & {
+      div {
+        &::-webkit-scrollbar {
+          width: 8px;
+          background-color: #b3b3b3;
+          border-radius: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          width: 6px;
+          border-radius: 8px;
+          background-color: #c6307c;
+        }
+      }
+    }
+  }
 
   @keyframes textSizeChange {
     0% {

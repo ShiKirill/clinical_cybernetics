@@ -1,3 +1,4 @@
 import excelDataStore from "./excelDataStore";
+import appStore from "./appStore";
 
-export { excelDataStore };
+export { appStore, excelDataStore };

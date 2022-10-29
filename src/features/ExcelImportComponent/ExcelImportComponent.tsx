@@ -1,79 +1,71 @@
 import React, { useEffect } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { observer } from "mobx-react";
 import block from "bem-cn";
 
-import * as XLSX from "xlsx";
-import { DragNDropEvents } from "../../shared/enums";
+import PatientsRowModel from "../../stores/models/PatientsRowModel";
+import { excelDataStore } from "../../stores";
 
 import "./ExcelImportComponent.scss";
 
 const cnExcelImportComponent = block("excelImportComponent");
 
 type ExcelImportComponentType = {
-  id: string;
+  currentModel: PatientsRowModel;
 };
 
 const ExcelImportComponent = (props: ExcelImportComponentType) => {
-  const { id } = props;
-
-  const handleFiles = (files: any) => {
-    const reader = new FileReader();
-
-    reader.readAsArrayBuffer(files[0]);
-
-    reader.onload = function (e) {
-      if (e.target) {
-        console.log('TARGET: ', id)
-
-        const data = e.target.result;
-        const workbook = XLSX.read(data, { type: "binary" });
-        console.log(workbook);
-        const sheetNames = workbook.SheetNames;
-        const worksheet = workbook.Sheets[sheetNames[0]];
-
-        const columnNames = (workbook as any).Strings.map(
-          (column: any) => column.t
-        ).filter((name: string) => !!name);
-        console.log(columnNames);
-        const json = XLSX.utils.sheet_to_json(worksheet);
-        console.log(json);
-      }
-    };
-  };
+  const { currentModel } = props;
 
   useEffect(() => {
-    if (!id) return;
+    if (!currentModel.id) return;
 
-    const element = document.getElementById(id);
+    const element = document.getElementById(currentModel.id);
 
     if (!element) return;
 
-    window.addEventListener(DragNDropEvents.DragOver, (e) => {
-      e.preventDefault();
-    });
-    window.addEventListener(DragNDropEvents.Drop, (e) => {
-      e.preventDefault();
-    });
+    currentModel.initDragNDropListeners(element);
 
     return () => {
-
+      currentModel.deInitDragNDropListeners(element);
     };
-  }, [id]);
+  }, [currentModel]);
 
-  return (
+  const importBlock = (
     <div className={cnExcelImportComponent()}>
       <input
         type="file"
         id="fileElem"
-        onChange={handleFiles}
+        onChange={currentModel.handleFiles}
         className={cnExcelImportComponent("input")}
       />
       <p className={cnExcelImportComponent("text")}>Drop your file here</p>
       <div
-        id={id}
+        id={currentModel.id}
         className={cnExcelImportComponent("drop-zone")}
       ></div>
     </div>
   );
+
+  return (
+    <div
+      className={cnExcelImportComponent("container", {
+        fullHeight: !!currentModel.data.length,
+      })}
+    >
+      <p className={cnExcelImportComponent("title")}>{currentModel.title}</p>
+
+      {currentModel.data.length ? (
+        <DataGrid
+          className={cnExcelImportComponent("table").toString()}
+          rows={currentModel.data}
+          columns={excelDataStore.columns}
+        ></DataGrid>
+      ) : (
+        importBlock
+      )}
+    </div>
+  );
 };
 
-export default ExcelImportComponent;
+export default observer(ExcelImportComponent);

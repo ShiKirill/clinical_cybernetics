@@ -1,5 +1,41 @@
 .appHeader {
   width: 100%;
   height: 60px;
-  background-color: #4599c2;
+  background-color: #c6307c;
+  position: relative;
+
+  &__tabs-container {
+    width: fit-content;
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+
+  &__tab-item {
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 8px;
+    align-items: center;
+    cursor: pointer;
+    color: #e9dcdc;
+
+    &_selected {
+      color: #94ff00;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background-color: #94ff00;
+        height: 2px;
+        width: 100%;
+      }
+    }
+
+    &_hidden {
+      display: none;
+    }
+  }
 }

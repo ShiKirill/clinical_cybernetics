@@ -4,3 +4,8 @@ export enum DragNDropEvents {
   DragOver = "dragover",
   Drop = "drop",
 }
+
+export enum AppTabs {
+  DataTab = "DataTab",
+  ChartTab = "ChartTab",
+}

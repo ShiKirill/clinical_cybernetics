@@ -2,30 +2,53 @@ import { makeAutoObservable } from "mobx";
 import * as XLSX from "xlsx";
 import { DragNDropEvents } from "../../shared/enums";
 
+type PatientsTableDataType = {
+  id: number;
+  value: number;
+};
+
+type PatientsRowModelType = {
+  id: string;
+  title: string;
+};
+
 class PatientsRowModel {
-  constructor() {
+  constructor(dto: PatientsRowModelType) {
     makeAutoObservable(this, undefined, { autoBind: true });
+
+    this.id = dto.id;
+    this.title = dto.title;
   }
+
+  public id = "";
+
+  public title = "";
+
+  public data: PatientsTableDataType[] = [];
 
   public handleFiles(files: any) {
     const reader = new FileReader();
 
     reader.readAsArrayBuffer(files[0]);
 
-    reader.onload = function (e) {
+    reader.onload = (e) => {
       if (e.target) {
         const data = e.target.result;
         const workbook = XLSX.read(data, { type: "binary" });
-        console.log(workbook);
+
         const sheetNames = workbook.SheetNames;
         const worksheet = workbook.Sheets[sheetNames[0]];
 
         const columnNames = (workbook as any).Strings.map(
           (column: any) => column.t
         ).filter((name: string) => !!name);
-        console.log(columnNames);
+        const headerName = columnNames[0];
         const json = XLSX.utils.sheet_to_json(worksheet);
-        console.log(json);
+
+        this.data = json.map((item: any, index) => ({
+          id: index + 1,
+          value: item[headerName],
+        }));
       }
     };
   }
