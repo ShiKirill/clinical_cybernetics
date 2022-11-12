@@ -14,7 +14,13 @@ import { Button } from "@mui/material";
 const cnApp = block("App");
 
 const App = () => {
+  const clearData = () => {
+    excelDataStore.setIsCalculated(false);
+  };
+
   const calculateData = () => {
+    excelDataStore.defineMinMaxModels();
+    excelDataStore.calculateStep();
     excelDataStore.setIsCalculated(true);
   };
 
@@ -37,16 +43,25 @@ const App = () => {
               </div>
               {!!excelDataStore.healthyPatientsModel.data.length &&
                 !!excelDataStore.sickPatientsModel.data.length && (
-                  <Button
-                    className={cnApp("calculate-btn", {
-                      disabled: excelDataStore.isCalculated,
-                    }).toString()}
-                    variant="outlined"
-                    disabled={excelDataStore.isCalculated}
-                    onClick={calculateData}
-                  >
-                    Calculate
-                  </Button>
+                  <div className={cnApp("buttons-wrapper")}>
+                    <Button
+                      className={cnApp("clear-btn").toString()}
+                      variant="outlined"
+                      onClick={clearData}
+                    >
+                      Clear
+                    </Button>
+                    <Button
+                      className={cnApp("calculate-btn", {
+                        disabled: excelDataStore.isCalculated,
+                      }).toString()}
+                      variant="contained"
+                      disabled={excelDataStore.isCalculated}
+                      onClick={calculateData}
+                    >
+                      Calculate
+                    </Button>
+                  </div>
                 )}
             </>
           )}

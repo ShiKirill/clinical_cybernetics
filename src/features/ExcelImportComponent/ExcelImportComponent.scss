@@ -1,7 +1,9 @@
+@import '../../styles/constatnts';
+
 .excelImportComponent {
   width: 100%;
   height: calc(100% - 80px);
-  border: 1px solid #1f191c;
+  border: 1px solid $black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,20 +25,20 @@
 
   &__table {
     height: calc(100% - 100px) !important;
-    background-color: #f0c1d6;
+    background-color: $table-background;
 
     & {
       div {
         &::-webkit-scrollbar {
           width: 8px;
-          background-color: #b3b3b3;
+          background-color: $gray;
           border-radius: 4px;
         }
 
         &::-webkit-scrollbar-thumb {
           width: 6px;
           border-radius: 8px;
-          background-color: #c6307c;
+          background-color: $header-background;
         }
       }
     }

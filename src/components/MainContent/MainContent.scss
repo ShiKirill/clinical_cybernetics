@@ -1,8 +1,10 @@
+@import '../../styles/constatnts';
+
 .appMainContent {
   width: 100%;
   height: calc(100vh - 60px);
   overflow: hidden;
-  background-color: #e9dcdc;
+  background-color: $background-color;
   display: flex;
   align-items: center;
   justify-content: center;

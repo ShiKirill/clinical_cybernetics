@@ -1,3 +1,5 @@
+@import "styles/constatnts";
+
 .App {
   text-align: center;
   display: block;
@@ -24,17 +26,32 @@
     align-items: center;
   }
 
-  &__calculate-btn {
+  &__buttons-wrapper {
     position: absolute !important;
     right: 16px;
     top: 16px;
-    color: #c6307c !important;
-    border-color: #c6307c !important;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__clear-btn {
+    color: $button-color !important;
+    border-color: $button-color !important;
     border-width: 3px !important;
+    margin-right: 16px !important;
 
     &_disabled {
       color: #8f8f8f !important;
       border-color: #8f8f8f !important;
+    }
+  }
+
+  &__calculate-btn {
+    color: $background-color !important;
+    background-color: $button-color !important;
+
+    &_disabled {
+      background-color: $gray !important;
     }
   }
 }

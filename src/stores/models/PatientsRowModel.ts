@@ -65,6 +65,22 @@ class PatientsRowModel {
     }
   }
 
+  public getMinValue() {
+    return Math.min(...this.data.map((item) => item.value));
+  }
+
+  public getMaxValue() {
+    return Math.max(...this.data.map((item) => item.value));
+  }
+
+  public getSortedDataValues = () => {
+    return this.data
+      .map((item) => item.value)
+      .sort((a, b) => {
+        return a - b;
+      });
+  };
+
   public initDragNDropListeners(element: HTMLElement) {
     element.addEventListener(
       DragNDropEvents.DragEnter,
