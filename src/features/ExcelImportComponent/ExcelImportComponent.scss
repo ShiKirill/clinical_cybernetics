@@ -27,6 +27,10 @@
     height: calc(100% - 100px) !important;
     background-color: $table-background;
 
+    * {
+      color: #fafafa !important;
+    }
+
     & {
       div {
         &::-webkit-scrollbar {

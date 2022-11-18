@@ -7,5 +7,5 @@ export enum DragNDropEvents {
 
 export enum AppTabs {
   DataTab = "DataTab",
-  ChartTab = "ChartTab",
+  ResultsTab = "ResultsTab",
 }

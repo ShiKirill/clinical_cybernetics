@@ -1,15 +1,19 @@
 import React from "react";
 import block from "bem-cn";
 import { observer } from "mobx-react";
+import { Button } from "@mui/material";
 
 import Header from "./components/Header";
 import MainComponent from "./components/MainContent";
-
-import "./App.scss";
-import { appStore, excelDataStore } from "./stores";
 import { AppTabs } from "./shared/enums";
 import ExcelImportComponent from "./features/ExcelImportComponent";
-import { Button } from "@mui/material";
+
+import { appStore, excelDataStore } from "./stores";
+
+import "./App.scss";
+
+import CurveROC from "./features/CurveROC/CurveROC";
+import DataOutput from "./features/DataOutput/DataOutput";
 
 const cnApp = block("App");
 
@@ -20,7 +24,7 @@ const App = () => {
 
   const calculateData = () => {
     excelDataStore.defineMinMaxModels();
-    excelDataStore.calculateStep();
+    excelDataStore.analyzeData();
     excelDataStore.setIsCalculated(true);
   };
 
@@ -66,7 +70,12 @@ const App = () => {
             </>
           )}
 
-          {appStore.currentTab === AppTabs.ChartTab && <></>}
+          {appStore.currentTab === AppTabs.ResultsTab && (
+            <div className={cnApp("results-block")}>
+              <DataOutput />
+              <CurveROC />
+            </div>
+          )}
         </div>
       </MainComponent>
     </div>

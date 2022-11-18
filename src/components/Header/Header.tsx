@@ -2,9 +2,9 @@ import React from "react";
 import { observer } from "mobx-react";
 import block from "bem-cn";
 import { appStore, excelDataStore } from "../../stores";
+import { AppTabs } from "../../shared/enums";
 
 import "./Header.scss";
-import { AppTabs } from "../../shared/enums";
 
 const cnHeader = block("appHeader");
 
@@ -22,7 +22,7 @@ const Header = () => {
               className={cnHeader("tab-item", {
                 selected: appStore.currentTab === appTab.id,
                 hidden:
-                  appTab.id === AppTabs.ChartTab &&
+                  appTab.id === AppTabs.ResultsTab &&
                   !excelDataStore.isCalculated,
               }).toString()}
               onClick={selectTab}

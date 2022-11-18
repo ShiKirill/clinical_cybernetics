@@ -11,8 +11,8 @@ class AppStore {
   public appTabs = [
     { id: AppTabs.DataTab, text: "Данные" },
     {
-      id: AppTabs.ChartTab,
-      text: "График + ...",
+      id: AppTabs.ResultsTab,
+      text: "Результаты",
     },
   ];
 
