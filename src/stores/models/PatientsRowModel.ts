@@ -126,6 +126,10 @@ class PatientsRowModel {
       false
     );
   }
+
+  public clearStore() {
+    this.data = [];
+  }
 }
 
 export default PatientsRowModel;

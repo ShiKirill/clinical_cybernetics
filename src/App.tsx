@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import block from "bem-cn";
 import { observer } from "mobx-react";
 import { Button } from "@mui/material";
@@ -19,7 +19,7 @@ const cnApp = block("App");
 
 const App = () => {
   const clearData = () => {
-    excelDataStore.setIsCalculated(false);
+    excelDataStore.clearStore();
   };
 
   const calculateData = () => {
@@ -27,6 +27,15 @@ const App = () => {
     excelDataStore.analyzeData();
     excelDataStore.setIsCalculated(true);
   };
+
+  useEffect(() => {
+    if (
+      appStore.currentTab === AppTabs.ResultsTab &&
+      !excelDataStore.isCalculated
+    ) {
+      appStore.setCurrentTab(AppTabs.DataTab);
+    }
+  }, [appStore.currentTab, excelDataStore.isCalculated]);
 
   return (
     <div className={cnApp()}>

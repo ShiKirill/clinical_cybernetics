@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import PatientsRowModel from "./models/PatientsRowModel";
 import { GridColDef } from "@mui/x-data-grid";
 import ParameterModel from "./models/ParameterModel";
+import { Round } from "./utils";
 
 export type ChartData = {
   xValue: number;
@@ -148,10 +149,38 @@ class ExcelDataStore {
   }
 
   public generateChartData() {
-    this.chartData = this.calculatedParams
-        .map((param) => param.getChartData())
-        .sort((a, b) => a.xValue - b.xValue)
-        .sort((a, b) => a.yValue - b.yValue);
+    const chartData = this.calculatedParams
+      .map((param) => param.getChartData())
+      .sort((a, b) => a.xValue - b.xValue)
+      .sort((a, b) => a.yValue - b.yValue)
+      .reduce((chartData: ChartData[], currentItem) => {
+        if (!chartData.find((item) => item.xValue === currentItem.xValue))
+          chartData.push(currentItem);
+        return chartData;
+      }, []);
+
+    if (chartData[chartData.length - 1].xValue < 1) {
+      let xMinStep = 1;
+      chartData.forEach((item, index) => {
+        if (index > 0 && item.xValue - chartData[index - 1].xValue)
+          xMinStep = item.xValue - chartData[index - 1].xValue;
+      });
+
+      const stepsCount =
+        (1 - chartData[chartData.length - 1].xValue) / xMinStep;
+
+      const yMinStep =
+        (1 - chartData[chartData.length - 1].yValue) / stepsCount;
+
+      for (let i = 0; i < stepsCount; i++) {
+        chartData.push({
+          xValue: Round(chartData[chartData.length - 1].xValue + xMinStep, 2),
+          yValue: chartData[chartData.length - 1].yValue + yMinStep,
+        });
+      }
+    }
+
+    this.chartData = chartData;
   }
 
   public getROCArea() {
@@ -176,6 +205,19 @@ class ExcelDataStore {
     this.generateChartData();
     this.getROCArea();
     this.calculateCOP();
+  }
+
+  clearStore() {
+    this.isCalculated = false;
+    this.step = 0;
+    this.minModel = null;
+    this.maxModel = null;
+    this.calculatedParams = [];
+    this.chartData = [];
+    this.rocArea = 0;
+    this.cop = null;
+    this.healthyPatientsModel.clearStore();
+    this.sickPatientsModel.clearStore();
   }
 }
 

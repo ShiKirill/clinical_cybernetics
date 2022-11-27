@@ -19,7 +19,6 @@ const ExcelImportComponent = (props: ExcelImportComponentType) => {
 
   useEffect(() => {
     if (!currentModel.id) return;
-
     const element = document.getElementById(currentModel.id);
 
     if (!element) return;
@@ -29,7 +28,7 @@ const ExcelImportComponent = (props: ExcelImportComponentType) => {
     return () => {
       currentModel.deInitDragNDropListeners(element);
     };
-  }, [currentModel]);
+  }, [currentModel, currentModel.data.length]);
 
   const importBlock = (
     <div className={cnExcelImportComponent()}>

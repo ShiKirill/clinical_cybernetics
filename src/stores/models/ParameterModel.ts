@@ -36,7 +36,7 @@ class ParameterModel {
   public getChartData() {
     return {
       xValue: Round(1 - this.Sp, 2),
-      yValue: Round(this.Se, 2),
+      yValue: this.Se,
     };
   }
 }
