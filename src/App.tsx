@@ -25,7 +25,6 @@ const App = () => {
   const calculateData = () => {
     excelDataStore.defineMinMaxModels();
     excelDataStore.analyzeData();
-    excelDataStore.setIsCalculated(true);
   };
 
   useEffect(() => {
@@ -82,7 +81,7 @@ const App = () => {
           {appStore.currentTab === AppTabs.ResultsTab && (
             <div className={cnApp("results-block")}>
               <DataOutput />
-              <CurveROC />
+              {!!excelDataStore.step && <CurveROC />}
             </div>
           )}
         </div>

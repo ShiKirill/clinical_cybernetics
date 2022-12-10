@@ -3,7 +3,7 @@ import PatientsRowModel from "./models/PatientsRowModel";
 import { GridColDef } from "@mui/x-data-grid";
 import ParameterModel from "./models/ParameterModel";
 import { Round } from "./utils";
-import {appStore} from "./index";
+import { appStore } from "./index";
 
 export type ChartData = {
   xValue: number;
@@ -56,25 +56,41 @@ class ExcelDataStore {
   }
 
   public defineMinMaxModels() {
-    this.minModel =
-      this.healthyPatientsModel.getMinValue() <
-      this.sickPatientsModel.getMinValue()
-        ? this.healthyPatientsModel
-        : this.sickPatientsModel;
+    this.minModel = this.healthyPatientsModel;
 
-    this.maxModel =
-      this.healthyPatientsModel.getMinValue() <
-      this.sickPatientsModel.getMinValue()
-        ? this.sickPatientsModel
-        : this.healthyPatientsModel;
+    this.maxModel = this.sickPatientsModel;
+  }
+
+  public noOverlapHandler() {
+    if (!this.maxModel || !this.minModel) return;
+
+    const intervalValue =
+      (this.minModel.getMaxValue() + this.maxModel.getMinValue()) / 2;
+
+    this.cop = new ParameterModel({
+      Se: 1,
+      Sp: 1,
+      Ph: 1,
+      Nd: 1,
+      intervalValue,
+    });
+    this.rocArea = 1;
   }
 
   public calculateStep() {
     if (!this.minModel || !this.maxModel) return;
 
-    if (this.minModel.getMaxValue() < this.maxModel.getMinValue()) {
+    if (this.maxModel.getMinValue() < this.minModel.getMinValue()) {
       this.step = 0;
-      appStore.setSnackBarMessage('Перекрытие между выборками отсутствует!');
+      appStore.setSnackBarMessage("Выборки перепутаны!");
+      return;
+    }
+
+    if (this.maxModel.getMinValue() > this.minModel.getMaxValue()) {
+      this.step = 0;
+      this.noOverlapHandler();
+      this.isCalculated = true;
+      appStore.setSnackBarMessage("Перекрытие между выборками отсутствует!");
       return;
     }
 
@@ -202,10 +218,14 @@ class ExcelDataStore {
 
   public analyzeData() {
     this.calculateStep();
-    this.calculateMistakes();
-    this.generateChartData();
-    this.getROCArea();
-    this.calculateCOP();
+
+    if (this.step) {
+      this.calculateMistakes();
+      this.generateChartData();
+      this.getROCArea();
+      this.calculateCOP();
+      this.setIsCalculated(true);
+    }
   }
 
   clearStore() {
