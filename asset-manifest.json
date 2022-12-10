@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/clinical_cybernetics/static/css/main.7ac6c526.css",
+    "main.js": "/clinical_cybernetics/static/js/main.3152026e.js",
+    "static/js/787.28cb0dcd.chunk.js": "/clinical_cybernetics/static/js/787.28cb0dcd.chunk.js",
+    "index.html": "/clinical_cybernetics/index.html",
+    "main.7ac6c526.css.map": "/clinical_cybernetics/static/css/main.7ac6c526.css.map",
+    "main.3152026e.js.map": "/clinical_cybernetics/static/js/main.3152026e.js.map",
+    "787.28cb0dcd.chunk.js.map": "/clinical_cybernetics/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7ac6c526.css",
+    "static/js/main.3152026e.js"
+  ]
+}
