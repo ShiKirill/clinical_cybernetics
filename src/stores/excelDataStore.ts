@@ -3,6 +3,7 @@ import PatientsRowModel from "./models/PatientsRowModel";
 import { GridColDef } from "@mui/x-data-grid";
 import ParameterModel from "./models/ParameterModel";
 import { Round } from "./utils";
+import {appStore} from "./index";
 
 export type ChartData = {
   xValue: number;
@@ -73,7 +74,7 @@ class ExcelDataStore {
 
     if (this.minModel.getMaxValue() < this.maxModel.getMinValue()) {
       this.step = 0;
-      alert("Перекрытие между выборками отсутствует");
+      appStore.setSnackBarMessage('Перекрытие между выборками отсутствует!');
       return;
     }
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import block from "bem-cn";
 import { observer } from "mobx-react";
-import { Button } from "@mui/material";
+import { Alert, Button, Snackbar } from "@mui/material";
 
 import Header from "./components/Header";
 import MainComponent from "./components/MainContent";
@@ -87,6 +87,24 @@ const App = () => {
           )}
         </div>
       </MainComponent>
+      <Snackbar
+        open={!!appStore.snackBarMessage}
+        autoHideDuration={3000}
+        onClose={appStore.closeSnackBar}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={appStore.closeSnackBar}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {appStore.snackBarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
